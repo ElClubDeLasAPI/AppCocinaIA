@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Recetas</title>
+    <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+    <h1>Generador de Recetas</h1>
+    
+    <a href="#" id="openApiKeyDialogBtn">Configurar API Key</a>
+
+    <dialog id="apiKeyDialog">
+        <h2>Configurar API Key</h2>
+        <input type="text" id="apiKeyInput" placeholder="Ingresa tu API Key">
+        <button id="setApiKeyBtn">Establecer API Key</button>
+        <button id="clearApiKeyBtn">Limpiar API Key</button>
+        <button id="closeDialogBtn">Cerrar</button>
+    </dialog>
+
+    <div id="ingredientSelection"></div>
+
+    <button id="generateBtn">Generar Receta</button>
+
+    <div id="recipeDisplay"></div>
+
+    <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
