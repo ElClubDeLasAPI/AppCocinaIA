@@ -32,42 +32,9 @@ const mainApp = document.getElementById('mainApp') as HTMLDivElement;
 const startBtn = document.getElementById('startBtn') as HTMLButtonElement;
 
 // Nuevas variables para los elementos del DOM
-const languageSelect = document.getElementById('languageSelect') as HTMLSelectElement;
 const darkModeToggle = document.getElementById('darkModeToggle') as HTMLButtonElement;
 const mascot = document.getElementById('mascot') as HTMLDivElement;
 const mascotMessage = document.getElementById('mascotMessage') as HTMLParagraphElement;
-
-// Objeto para almacenar las traducciones
-const translations: { [key: string]: { [key: string]: string } } = {
-    es: {
-        start: "Comenzar",
-        generateRecipes: "Generar Recetas",
-        backToList: "Volver a la lista",
-        // ... más traducciones ...
-    },
-    en: {
-        start: "Start",
-        generateRecipes: "Generate Recipes",
-        backToList: "Back to list",
-        // ... más traducciones ...
-    },
-    fr: {
-        start: "Commencer",
-        generateRecipes: "Générer des Recettes",
-        backToList: "Retour à la liste",
-        // ... más traducciones ...
-    }
-};
-
-// Función para cambiar el idioma
-function changeLanguage(lang: string) {
-    document.querySelectorAll('[data-translate]').forEach((element) => {
-        const key = element.getAttribute('data-translate');
-        if (key) {
-            (element as HTMLElement).innerText = translations[lang][key];
-        }
-    });
-}
 
 // Función para alternar el modo oscuro
 function toggleDarkMode() {
@@ -128,21 +95,13 @@ function initUI() {
         mainApp.classList.remove('hidden');
     });
 
-    languageSelect.addEventListener('change', (e) => {
-        const lang = (e.target as HTMLSelectElement).value;
-        changeLanguage(lang);
-        showMascotMessage(`¡Idioma cambiado a ${lang}!`);
-    });
-
     darkModeToggle.addEventListener('click', toggleDarkMode);
 
-    // Verificar si el modo oscuro estaba activado anteriormente
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        document.body.classList.add('dark-mode');
-    }
+    // Asegurar que el modo claro esté activado por defecto
+    document.body.classList.remove('dark-mode');
+    localStorage.setItem('darkMode', 'disabled');
 
-    // Mostrar un mensaje de bienvenida
-    showMascotMessage("¡Bienvenido a SaborSync! Estoy aquí para ayudarte.");
+    showMascotMessage("¡Bienvenido a SaborSync! Soy Ratatouille, tu chef virtual.");
 
     // Agregar interacciones periódicas
     setInterval(() => {
@@ -156,9 +115,9 @@ function initUI() {
 function toggleIngredient(button: HTMLElement) {
     button.classList.toggle('selected');
     if (button.classList.contains('selected')) {
-        showMascotMessage(`¡Excelente elección! ${button.textContent} puede ser delicioso en muchas recetas.`);
+        showMascotMessage(`¡Excelente elección! ${button.textContent} puede ser delicioso en muchas recetas. ¿Qué más añadirás?`);
     } else {
-        showMascotMessage(`Has quitado ${button.textContent}. ¡No te preocupes, aún hay muchas opciones!`);
+        showMascotMessage(`Has quitado ${button.textContent}. A veces, menos es más. ¿Qué otros ingredientes combinarían bien?`);
     }
 }
 
@@ -181,7 +140,7 @@ async function generateRecipes() {
     });
 
     const prompt = ChatPromptTemplate.fromTemplate(`
-        Eres un chef experto. Crea 5 recetas gourmet utilizando algunos o todos los siguientes ingredientes: {ingredients}.
+        Eres un chef experto. Crea 4 recetas gourmet utilizando algunos o todos los siguientes ingredientes: {ingredients}.
         Para cada receta, proporciona:
         1. Nombre creativo de la receta
         2. Breve descripción (máximo 2 frases)
@@ -197,37 +156,26 @@ async function generateRecipes() {
 
     try {
         console.log('Ingredientes seleccionados:', selectedIngredients);
-        const response = await chain.invoke({
-            ingredients: selectedIngredients.join(', ')
-        });
+        const response = await retryWithExponentialBackoff(() => 
+            chain.invoke({
+                ingredients: selectedIngredients.join(', ')
+            })
+        );
 
         console.log('Respuesta cruda de la API:', response);
 
         let recipes;
         try {
-            // Intenta parsear la respuesta como JSON
             recipes = JSON.parse(response);
         } catch (parseError) {
             console.error('Error al parsear la respuesta JSON:', parseError);
             console.log('Respuesta que causó el error:', response);
-            
-            // Intenta limpiar y reparar el JSON
-            const cleanedResponse = response.replace(/\n/g, '').replace(/\r/g, '').trim();
-            const fixedResponse = cleanedResponse.replace(/,\s*]/g, ']').replace(/,\s*}/g, '}');
-            
-            try {
-                recipes = JSON.parse(fixedResponse);
-                console.log('JSON reparado y parseado:', recipes);
-            } catch (fixError) {
-                console.error('Error al parsear el JSON reparado:', fixError);
-                // Si falla, procesa la respuesta como texto plano
-                recipes = processPlainTextResponse(response);
-            }
+            recipes = processPlainTextResponse(response);
         }
 
         if (!Array.isArray(recipes)) {
             console.error('La respuesta no es un array de recetas:', recipes);
-            recipes = [recipes]; // Convierte a array si es un objeto único
+            recipes = [recipes];
         }
 
         if (recipes.length === 0) {
@@ -235,15 +183,33 @@ async function generateRecipes() {
         }
 
         displayRecipeCards(recipes);
+        showMascotMessage("¡Recetas generadas! Echa un vistazo a estas deliciosas opciones.");
     } catch (error) {
         console.error('Error al generar las recetas:', error);
         alert('Hubo un error al generar las recetas. Por favor, intenta de nuevo con diferentes ingredientes.');
+        showMascotMessage("Ups, parece que hubo un problema. ¿Qué tal si intentamos con otros ingredientes?");
     } finally {
         generateBtn.disabled = false;
         generateBtn.textContent = 'Generar Recetas';
     }
+}
 
-    showMascotMessage("¡Estoy emocionado por ver qué deliciosas recetas vamos a crear!");
+// Función para reintentar con retroceso exponencial
+async function retryWithExponentialBackoff(operation: () => Promise<any>, maxRetries = 5) {
+    for (let i = 0; i < maxRetries; i++) {
+        try {
+            return await operation();
+        } catch (error: any) {
+            if (error.response && error.response.status === 429) {
+                const delay = Math.pow(2, i) * 1000;
+                console.log(`Reintentando en ${delay}ms...`);
+                await new Promise(resolve => setTimeout(resolve, delay));
+            } else {
+                throw error;
+            }
+        }
+    }
+    throw new Error('Máximo número de reintentos alcanzado');
 }
 
 function processPlainTextResponse(response: string): any[] {
@@ -366,7 +332,7 @@ ${instructionsList}
     recipeList.classList.add('hidden');
     recipeDisplay.classList.remove('hidden');
 
-    showMascotMessage(`¡${recipe.name} suena delicioso! No puedo esperar a que lo pruebes.`);
+    showMascotMessage(`¡${recipe.name} suena delicioso! Me encanta especialmente cómo has combinado los ingredientes. ¿Te animas a cocinarla?`);
 }
 
 // Función para volver a la lista de recetas
@@ -383,13 +349,22 @@ console.log('Script main.ts cargado');
 const mascotImg = document.querySelector('#mascot img') as HTMLImageElement;
 
 const mascotSuggestions = [
-    "¿Por qué no pruebas a combinar pollo con limón?",
-    "Las especias pueden transformar un plato simple en algo extraordinario.",
-    "No olvides los vegetales, ¡son la clave para una comida balanceada!",
-    "¿Has considerado usar hierbas frescas? Pueden elevar cualquier receta.",
-    "Recuerda, la presentación es casi tan importante como el sabor.",
-    "¿Qué tal si experimentas con una fusión de cocinas?",
-    "Un toque de ácido puede equilibrar perfectamente un plato rico.",
+    "¿Por qué no pruebas a combinar pollo con limón? ¡Es una combinación deliciosa!",
+    "Las especias pueden transformar un plato simple en algo extraordinario. ¡Experimenta!",
+    "No olvides los vegetales, ¡son la clave para una comida balanceada y colorida!",
+    "¿Has considerado usar hierbas frescas? Pueden elevar cualquier receta a un nivel gourmet.",
+    "Recuerda, la presentación es casi tan importante como el sabor. ¡Come también con los ojos!",
+    "¿Qué tal si experimentas con una fusión de cocinas? ¡Mezcla sabores de diferentes culturas!",
+    "Un toque de ácido puede equilibrar perfectamente un plato rico. Prueba con limón o vinagre.",
+    "¿Sabías que el umami es el quinto sabor básico? ¡Busca ingredientes que lo aporten!",
+    "La textura es importante en un plato. Combina elementos crujientes con suaves.",
+    "¿Has probado a asar las verduras? Realza su sabor y les da un toque ahumado delicioso.",
+    "Un buen cuchillo afilado es el mejor amigo de un chef. ¡Cuida tus herramientas!",
+    "No temas experimentar. A veces, los mejores platos nacen de accidentes en la cocina.",
+    "La cocina es un arte y tú eres el artista. ¡Deja volar tu creatividad!",
+    "Un buen maridaje puede elevar tu comida. Experimenta con diferentes vinos o bebidas.",
+    "¿Has pensado en hacer tu propio pan? El aroma en la cocina es incomparable.",
+    "Recuerda siempre probar tu comida mientras cocinas. Ajusta los sabores sobre la marcha."
 ];
 
 function getRandomSuggestion() {
