@@ -3,28 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Recetas</title>
+    <title>Generador de Recetas Gourmet</title>
     <link rel="stylesheet" href="src/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Generador de Recetas</h1>
-    
-    <a href="#" id="openApiKeyDialogBtn">Configurar API Key</a>
+    <div class="container">
+        <header>
+            <h1>Generador de Recetas Gourmet</h1>
+            <p>Selecciona tus ingredientes y crea recetas únicas</p>
+        </header>
+        
+        <main>
+            <section id="ingredientSelection"></section>
+             
+            <button id="generateBtn">Generar Recetas</button>
+            
+            <section id="recipeList" class="hidden">
+                <h2>Recetas Sugeridas</h2>
+                <div id="recipeCards"></div>
+            </section>
 
-    <dialog id="apiKeyDialog">
-        <h2>Configurar API Key</h2>
-        <input type="text" id="apiKeyInput" placeholder="Ingresa tu API Key">
-        <button id="setApiKeyBtn">Establecer API Key</button>
-        <button id="clearApiKeyBtn">Limpiar API Key</button>
-        <button id="closeDialogBtn">Cerrar</button>
-    </dialog>
-
-    <div id="ingredientSelection"></div>
-
-    <button id="generateBtn">Generar Receta</button>
-
-    <div id="recipeDisplay"></div>
-
+            <section id="recipeDisplay" class="hidden">
+                <h2>Detalles de la Receta</h2>
+                <div id="recipeContent"></div>
+                <button id="backToListBtn">Volver a la lista</button>
+            </section>
+        </main>
+        
+        <footer>
+            <p>Creado con ❤️ por tu Chef Virtual</p>
+        </footer>
+    </div>
     <script type="module" src="/src/main.ts"></script>
 </body>
 </html>
