@@ -3,37 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Recetas Gourmet</title>
+    <title>SaborSync - Generador de Recetas Gourmet</title>
     <link rel="stylesheet" href="src/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Generador de Recetas Gourmet</h1>
-            <p>Selecciona tus ingredientes y crea recetas únicas</p>
-        </header>
-        
-        <main>
-            <section id="ingredientSelection"></section>
-             
-            <button id="generateBtn">Generar Recetas</button>
+    <div id="app">
+        <div id="coverPage" class="page">
+            <div class="cover-content">
+                <h1>SaborSync <span class="food-emoji">🍳</span></h1>
+                <p>Descubre deliciosas recetas con tus ingredientes favoritos</p>
+                <button id="startBtn">Comenzar <i class="fas fa-utensils"></i></button>
+            </div>
+        </div>
+        <div id="mainApp" class="page hidden">
+            <header>
+                <h1>SaborSync <span class="food-emoji">👨‍🍳</span></h1>
+                <p>Selecciona tus ingredientes y crea recetas únicas</p>
+                <div id="settings">
+                    <select id="languageSelect">
+                        <option value="es">Español</option>
+                        <option value="en">English</option>
+                        <option value="fr">Français</option>
+                    </select>
+                    <button id="darkModeToggle" aria-label="Cambiar modo oscuro">
+                        <i class="fas fa-sun"></i>
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </header>
             
-            <section id="recipeList" class="hidden">
-                <h2>Recetas Sugeridas</h2>
-                <div id="recipeCards"></div>
-            </section>
+            <main>
+                <section id="ingredientSelection">
+                    <!-- Los grupos de ingredientes se generarán dinámicamente aquí -->
+                </section>
+                 
+                <button id="generateBtn">Generar Recetas <i class="fas fa-magic"></i></button>
+                
+                <section id="recipeList" class="hidden">
+                    <h2><i class="utensil-icon fas fa-book-open"></i>Recetas Sugeridas</h2>
+                    <div id="recipeCards"></div>
+                </section>
 
-            <section id="recipeDisplay" class="hidden">
-                <h2>Detalles de la Receta</h2>
-                <div id="recipeContent"></div>
-                <button id="backToListBtn">Volver a la lista</button>
-            </section>
-        </main>
-        
-        <footer>
-            <p>Creado con ❤️ por tu Chef Virtual</p>
-        </footer>
+                <section id="recipeDisplay" class="hidden">
+                    <h2><i class="utensil-icon fas fa-clipboard-list"></i>Detalles de la Receta</h2>
+                    <div id="recipeContent"></div>
+                    <button id="backToListBtn"><i class="fas fa-arrow-left"></i> Volver a la lista</button>
+                </section>
+            </main>
+            
+            <footer>
+                <p>Creado con <span class="food-emoji">❤️</span> por SaborSync</p>
+            </footer>
+        </div>
+    </div>
+    <div id="mascot">
+        <img src="/public/ratatouille.png" alt="Ratatouille mascot">
+        <p id="mascotMessage"></p>
     </div>
     <script type="module" src="/src/main.ts"></script>
 </body>

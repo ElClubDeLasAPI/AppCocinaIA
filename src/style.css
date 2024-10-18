@@ -1,10 +1,19 @@
 :root {
-    --primary-color: #4a4a4a;
-    --secondary-color: #f9a825;
-    --background-color: #f5f5f5;
+    --primary-color: #ff6b6b;
+    --secondary-color: #4ecdc4;
+    --background-color: #f7f7f7;
     --card-background: #ffffff;
     --text-color: #333333;
     --border-radius: 8px;
+    --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode {
+    --primary-color: #ff8787;
+    --secondary-color: #66d9e8;
+    --background-color: #2c3e50;
+    --card-background: #34495e;
+    --text-color: #ecf0f1;
 }
 
 * {
@@ -17,49 +26,99 @@ body {
     font-family: 'Poppins', sans-serif;
     background-color: var(--background-color);
     color: var(--text-color);
-    line-height: 1.6;
+    line-height: 1.4;
+    font-size: 14px;
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 1rem;
 }
 
-header {
+#coverPage {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://www.adslzone.net/app/uploads-adslzone.net/2022/03/cocinar.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    margin-bottom: 2rem;
 }
 
-h1 {
-    color: var(--primary-color);
+.cover-content {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    max-width: 400px;
+    box-shadow: var(--box-shadow);
+}
+
+.cover-content h1 {
+    font-family: 'Playfair Display', serif;
     font-size: 2.5rem;
+    color: var(--primary-color);
     margin-bottom: 0.5rem;
 }
 
+#startBtn, #generateBtn, #backToListBtn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+    box-shadow: var(--box-shadow);
+}
+
+#startBtn:hover, #generateBtn:hover, #backToListBtn:hover {
+    background-color: #ff8787;
+}
+
+header {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 1.5rem 0;
+    margin-bottom: 1rem;
+    box-shadow: var(--box-shadow);
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
+}
+
 header p {
-    color: var(--secondary-color);
-    font-size: 1.2rem;
+    font-size: 1rem;
+    opacity: 0.9;
 }
 
 #ingredientSelection {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
 }
 
 .ingredient-category {
     background-color: var(--card-background);
     border-radius: var(--border-radius);
-    padding: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    box-shadow: var(--box-shadow);
 }
 
 .ingredient-category h2 {
-    color: var(--secondary-color);
-    margin-bottom: 1rem;
-    font-size: 1.3rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--secondary-color);
+    padding-bottom: 0.25rem;
 }
 
 .ingredient-list {
@@ -71,8 +130,8 @@ header p {
 .ingredient {
     background-color: var(--background-color);
     border: 1px solid var(--secondary-color);
-    border-radius: 20px;
-    padding: 0.5rem 1rem;
+    border-radius: 15px;
+    padding: 0.3rem 0.8rem;
     cursor: pointer;
     transition: all 0.3s ease;
     font-size: 0.9rem;
@@ -84,64 +143,37 @@ header p {
 }
 
 .ingredient.selected {
-    background-color: var(--secondary-color);
+    background-color: var(--primary-color);
     color: var(--card-background);
-}
-
-#generateBtn, #backToListBtn {
-    display: block;
-    width: 100%;
-    max-width: 300px;
-    margin: 2rem auto;
-    padding: 1rem;
-    font-size: 1.2rem;
-    background-color: var(--secondary-color);
-    color: var(--card-background);
-    border: none;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#generateBtn:hover, #backToListBtn:hover {
-    background-color: #e69c00;
+    border-color: var(--primary-color);
 }
 
 #recipeList, #recipeDisplay {
     background-color: var(--card-background);
     border-radius: var(--border-radius);
-    padding: 2rem;
-    margin-top: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    margin-top: 1rem;
+    box-shadow: var(--box-shadow);
 }
 
 #recipeList h2, #recipeDisplay h2 {
-    color: var(--secondary-color);
+    color: var(--primary-color);
     margin-bottom: 1rem;
+    font-size: 1.5rem;
 }
 
 #recipeCards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
 }
 
 .recipe-card {
-    background-color: var(--background-color);
+    background-color: var(--card-background);
     border-radius: var(--border-radius);
     overflow: hidden;
-    transition: transform 0.3s ease;
     cursor: pointer;
-}
-
-.recipe-card:hover {
-    transform: translateY(-5px);
-}
-
-.recipe-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
+    box-shadow: var(--box-shadow);
 }
 
 .recipe-card-content {
@@ -151,6 +183,7 @@ header p {
 .recipe-card h3 {
     color: var(--primary-color);
     margin-bottom: 0.5rem;
+    font-size: 1.1rem;
 }
 
 #recipeContent {
@@ -160,7 +193,7 @@ header p {
 
 #recipeContent h1, #recipeContent h2, #recipeContent h3 {
     color: var(--primary-color);
-    margin-top: 1.5rem;
+    margin-top: 1rem;
     margin-bottom: 0.5rem;
 }
 
@@ -175,9 +208,12 @@ header p {
 
 footer {
     text-align: center;
-    margin-top: 2rem;
-    color: var(--primary-color);
+    margin-top: 1.5rem;
+    color: var(--text-color);
     font-size: 0.9rem;
+    padding: 1rem 0;
+    background-color: var(--card-background);
+    box-shadow: var(--box-shadow);
 }
 
 .hidden {
@@ -186,14 +222,193 @@ footer {
 
 @media (max-width: 768px) {
     .container {
-        padding: 1rem;
+        padding: 0.5rem;
     }
 
     h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
 
     #ingredientSelection, #recipeCards {
         grid-template-columns: 1fr;
     }
+}
+
+/* Añadir estilos para los emojis de alimentos */
+.food-emoji {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+}
+
+/* Estilo para el fondo de la página principal */
+#mainApp {
+    background-image: url('https://example.com/path-to-kitchen-utensils-pattern.png');
+    background-repeat: repeat;
+    background-size: 200px;
+    position: relative;
+}
+
+#mainApp::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    z-index: -1;
+}
+
+/* Estilos para los iconos de utensilios de cocina */
+.utensil-icon {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+}
+
+/* Añadir un borde decorativo a las categorías de ingredientes */
+.ingredient-category {
+    border: 2px solid var(--secondary-color);
+    position: relative;
+}
+
+.ingredient-category::before {
+    content: '🍽️';
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background-color: var(--card-background);
+    padding: 0 5px;
+}
+
+/* Estilo para el botón de generar recetas */
+#generateBtn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.1rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--box-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#generateBtn:hover {
+    background-color: #ff8787;
+    transform: translateY(-2px);
+}
+
+#generateBtn i {
+    margin-left: 0.5rem;
+}
+
+#settings {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+#languageSelect, #darkModeToggle {
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+    border: none;
+    background-color: var(--card-background);
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+/* Estilos para el botón de modo oscuro */
+#darkModeToggle {
+    width: 60px;
+    height: 30px;
+    border-radius: 15px;
+    background-color: var(--background-color);
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: 2px solid var(--text-color);
+}
+
+#darkModeToggle i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#darkModeToggle .fa-sun {
+    left: 5px;
+    opacity: 1;
+}
+
+#darkModeToggle .fa-moon {
+    right: 5px;
+    opacity: 0;
+}
+
+body.dark-mode #darkModeToggle {
+    background-color: var(--primary-color);
+}
+
+body.dark-mode #darkModeToggle .fa-sun {
+    opacity: 0;
+}
+
+body.dark-mode #darkModeToggle .fa-moon {
+    opacity: 1;
+}
+
+/* Estilos para la mascota Ratatouille */
+#mascot {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 120px;
+    text-align: center;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+#mascot img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+#mascot img:hover {
+    transform: scale(1.1);
+}
+
+body.dark-mode #mascot img {
+    filter: brightness(0.8) contrast(1.2);
+}
+
+#mascotMessage {
+    background-color: var(--card-background);
+    color: var(--text-color);
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#mascotMessage.show {
+    opacity: 1;
+}
+
+body.dark-mode #mascotMessage {
+    background-color: var(--primary-color);
+    color: white;
 }
