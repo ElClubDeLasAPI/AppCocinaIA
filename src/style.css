@@ -1,3 +1,4 @@
+/*Variables de color*/
 :root {
     --primary-color: #ff6b6b;
     --secondary-color: #4ecdc4;
@@ -6,8 +7,12 @@
     --text-color: #333333;
     --border-radius: 8px;
     --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --dark-background-color: #212121;
+    --dark-text-color: #E0E0E0;
+    --dark-primary-color: #FF5722;
 }
 
+/*Modo oscuro*/
 body.dark-mode {
     --primary-color: #ff8787;
     --secondary-color: #66d9e8;
@@ -15,27 +20,35 @@ body.dark-mode {
     --card-background: #34495e;
     --text-color: #ecf0f1;
 }
-
+/*Reset de margenes y padding para todos los elementos*/
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
-body {
+/* Asegurar que el body y html ocupen toda la altura de la pantalla */
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; /* Eliminar scroll en portada */
     font-family: 'Poppins', sans-serif;
     background-color: var(--background-color);
     color: var(--text-color);
     line-height: 1.4;
     font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
+/*Contenedor principal*/
 .container {
     max-width: 1000px;
     margin: 0 auto;
     padding: 1rem;
 }
 
+/*Cover page*/
 #coverPage {
     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://www.adslzone.net/app/uploads-adslzone.net/2022/03/cocinar.jpg');
     background-size: cover;
@@ -45,8 +58,11 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
+    overflow: hidden; /*Evitar scroll en portada*/
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
+/*Contenido del botón de la cover page*/
 .cover-content {
     background-color: rgba(255, 255, 255, 0.9);
     padding: 2rem;
@@ -62,7 +78,8 @@ body {
     margin-bottom: 0.5rem;
 }
 
-#startBtn, #generateBtn, #backToListBtn {
+/*Botones principales*/
+button {
     background-color: var(--primary-color);
     color: white;
     border: none;
@@ -75,10 +92,40 @@ body {
     box-shadow: var(--box-shadow);
 }
 
-#startBtn:hover, #generateBtn:hover, #backToListBtn:hover {
+button:hover {
     background-color: #ff8787;
 }
 
+/* Estilo para el fondo de la página principal */
+#mainApp {
+    display: none;
+    height: 100vh;
+    overflow-y: scroll;
+    padding: 1rem;
+    background-image: url('https://example.com/path-to-kitchen-utensils-pattern.png');
+    background-repeat: repeat;
+    background-size: 200px;
+    position: relative;
+
+}
+
+/* Mostrar la pantalla mainApp cuando se haga clic en el botón */
+#mainApp.show {
+    display: block;
+}
+
+#mainApp::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    z-index: -1;
+}
+
+/*Header principal*/
 header {
     background-color: var(--primary-color);
     color: white;
@@ -90,13 +137,79 @@ header {
 
 h1 {
     font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    margin-bottom: 0.25rem;
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
 }
 
 header p {
-    font-size: 1rem;
+    font-size: 1.5rem;
     opacity: 0.9;
+}
+
+#settings {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* Estilos para el botón de modo oscuro */
+#languageSelect, #darkModeToggle {
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+    border: none;
+    background-color: var(--card-background);
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+#darkModeToggle {
+    width: 60px;
+    height: 30px;
+    border-radius: 15px;
+    margin-right: 10px;
+    background-color: var(--background-color);
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: 2px solid var(--text-color);
+}
+
+#darkModeToggle i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#darkModeToggle .fa-sun {
+    left: 5px;
+    opacity: 1;
+}
+
+#darkModeToggle .fa-moon {
+    right: 5px;
+    opacity: 0;
+}
+
+body.dark-mode #darkModeToggle {
+    background-color: var(--primary-color);
+}
+
+body.dark-mode #darkModeToggle .fa-sun {
+    opacity: 0;
+}
+
+body.dark-mode #darkModeToggle .fa-moon {
+    opacity: 1;
+}
+
+/*Seccion de ingredientes*/
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #ingredientSelection {
@@ -106,11 +219,14 @@ header p {
     margin-bottom: 1rem;
 }
 
+/*Categorias de ingredientes*/
 .ingredient-category {
     background-color: var(--card-background);
     border-radius: var(--border-radius);
     padding: 1rem;
     box-shadow: var(--box-shadow);
+    border: 2px solid var(--secondary-color);
+    position: relative;
 }
 
 .ingredient-category h2 {
@@ -148,6 +264,32 @@ header p {
     border-color: var(--primary-color);
 }
 
+/* Estilo para el botón de generar recetas */
+#generateBtn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.1rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--box-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#generateBtn:hover {
+    background-color: #ff8787;
+    transform: translateY(-2px);
+}
+
+#generateBtn i {
+    margin-left: 0.5rem;
+}
+
+/*Sección de recetas*/
 #recipeList, #recipeDisplay {
     background-color: var(--card-background);
     border-radius: var(--border-radius);
@@ -206,6 +348,7 @@ header p {
     margin-bottom: 0.5rem;
 }
 
+/*Footer principal*/
 footer {
     text-align: center;
     margin-top: 1.5rem;
@@ -216,47 +359,10 @@ footer {
     box-shadow: var(--box-shadow);
 }
 
-.hidden {
-    display: none;
-}
-
-@media (max-width: 768px) {
-    .container {
-        padding: 0.5rem;
-    }
-
-    h1 {
-        font-size: 1.8rem;
-    }
-
-    #ingredientSelection, #recipeCards {
-        grid-template-columns: 1fr;
-    }
-}
-
 /* Añadir estilos para los emojis de alimentos */
 .food-emoji {
     font-size: 1.5rem;
     margin-right: 0.5rem;
-}
-
-/* Estilo para el fondo de la página principal */
-#mainApp {
-    background-image: url('https://example.com/path-to-kitchen-utensils-pattern.png');
-    background-repeat: repeat;
-    background-size: 200px;
-    position: relative;
-}
-
-#mainApp::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(255, 255, 255, 0.9);
-    z-index: -1;
 }
 
 /* Estilos para los iconos de utensilios de cocina */
@@ -281,89 +387,6 @@ footer {
     padding: 0 5px;
 }
 
-/* Estilo para el botón de generar recetas */
-#generateBtn {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 0.8rem 1.5rem;
-    font-size: 1.1rem;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: var(--box-shadow);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#generateBtn:hover {
-    background-color: #ff8787;
-    transform: translateY(-2px);
-}
-
-#generateBtn i {
-    margin-left: 0.5rem;
-}
-
-#settings {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-#languageSelect, #darkModeToggle {
-    padding: 0.5rem;
-    border-radius: var(--border-radius);
-    border: none;
-    background-color: var(--card-background);
-    color: var(--text-color);
-    cursor: pointer;
-}
-
-/* Estilos para el botón de modo oscuro */
-#darkModeToggle {
-    width: 60px;
-    height: 30px;
-    border-radius: 15px;
-    background-color: var(--background-color);
-    position: relative;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    border: 2px solid var(--text-color);
-}
-
-#darkModeToggle i {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.2rem;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-#darkModeToggle .fa-sun {
-    left: 5px;
-    opacity: 1;
-}
-
-#darkModeToggle .fa-moon {
-    right: 5px;
-    opacity: 0;
-}
-
-body.dark-mode #darkModeToggle {
-    background-color: var(--primary-color);
-}
-
-body.dark-mode #darkModeToggle .fa-sun {
-    opacity: 0;
-}
-
-body.dark-mode #darkModeToggle .fa-moon {
-    opacity: 1;
-}
-
 /* Estilos para la mascota Ratatouille */
 #mascot {
     position: fixed;
@@ -376,10 +399,10 @@ body.dark-mode #darkModeToggle .fa-moon {
 }
 
 #mascot img {
-    width: 100%;
+    width: 75%;
     height: auto;
     border-radius: 50%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgb(255, 149, 149);
     transition: all 0.3s ease;
     cursor: pointer;
 }
@@ -388,18 +411,14 @@ body.dark-mode #darkModeToggle .fa-moon {
     transform: scale(1.1);
 }
 
-body.dark-mode #mascot img {
-    filter: brightness(0.8) contrast(1.2);
-}
-
 #mascotMessage {
-    background-color: var(--card-background);
+    background-color: #fbdb94;
     color: var(--text-color);
     padding: 0.5rem;
     border-radius: var(--border-radius);
     margin-top: 0.5rem;
     font-size: 0.9rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgb(255, 149, 149);
     opacity: 0;
     transition: opacity 0.3s ease;
 }
@@ -408,7 +427,30 @@ body.dark-mode #mascot img {
     opacity: 1;
 }
 
+body.dark-mode #mascot img {
+    filter: brightness(0.8) contrast(1.2);
+}
+
 body.dark-mode #mascotMessage {
     background-color: var(--primary-color);
     color: white;
+}
+
+/* Asegurarse de que la animación sea fluida */
+.hidden {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0.5rem;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    #ingredientSelection, #recipeCards {
+        grid-template-columns: 1fr;
+    }
 }

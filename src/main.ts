@@ -31,9 +31,23 @@ const coverPage = document.getElementById('coverPage') as HTMLDivElement;
 const mainApp = document.getElementById('mainApp') as HTMLDivElement;
 const startBtn = document.getElementById('startBtn') as HTMLButtonElement;
 
+if (startBtn) {
+    startBtn.addEventListener('click', () => {
+        // Ocultar la portada (coverPage)
+        coverPage.classList.add('hidden');
+        
+        // Mostrar la pantalla principal (mainApp)
+        mainApp.classList.add('show'); // Usamos 'show' para mostrar mainApp
+
+        // Asegurarse de que la página se desplace al inicio de la pantalla principal
+        window.scrollTo(0, 0); // Esto asegura que la página comience en la parte superior de 'mainApp'
+    });
+} else {
+    console.error("No se encontró el botón con id 'startBtn'");
+}
+
 // Nuevas variables para los elementos del DOM
 const darkModeToggle = document.getElementById('darkModeToggle') as HTMLButtonElement;
-const mascot = document.getElementById('mascot') as HTMLDivElement;
 const mascotMessage = document.getElementById('mascotMessage') as HTMLParagraphElement;
 
 // Función para alternar el modo oscuro
