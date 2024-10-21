@@ -49,8 +49,7 @@ html, body {
 }
 
 /*Cover page*/
-#coverPage {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://www.adslzone.net/app/uploads-adslzone.net/2022/03/cocinar.jpg');
+#coverPage {background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('cocina.png');
     background-size: cover;
     background-position: center;
     height: 100vh;
