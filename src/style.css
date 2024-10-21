@@ -1,7 +1,7 @@
 /*Variables de color*/
 :root {
     --primary-color: #ff6b6b;
-    --secondary-color: #4ecdc4;
+    --secondary-color: #fbdb94;
     --background-color: #f7f7f7;
     --card-background: #ffffff;
     --text-color: #333333;
@@ -95,6 +95,58 @@ button {
 button:hover {
     background-color: #ff8787;
 }
+
+/* Estilos base para los botones */
+button, .ingredient, #generateBtn, #backToListBtn, #startBtn, #darkModeToggle {
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Efecto de resaltado al pasar el cursor */
+  button:hover, .ingredient:hover, #generateBtn:hover, #backToListBtn:hover, #startBtn:hover, #darkModeToggle:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+    transform: translateY(-2px);
+  }
+  
+  /* Efecto de onda al hacer clic */
+  button:active::after, .ingredient:active::after, #generateBtn:active::after, #backToListBtn:active::after, #startBtn:active::after, #darkModeToggle:active::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+    animation: ripple 0.6s ease-out;
+  }
+  
+  @keyframes ripple {
+    0% {
+      transform: scale(0, 0);
+      opacity: 0.5;
+    }
+    20% {
+      transform: scale(25, 25);
+      opacity: 0.3;
+    }
+    100% {
+      opacity: 0;
+      transform: scale(40, 40);
+    }
+  }
+  
+  /* Mantener el efecto de escala al hacer clic */
+  button:active, .ingredient:active, #generateBtn:active, #backToListBtn:active, #startBtn:active, #darkModeToggle:active {
+    transform: scale(0.98);
+  }
 
 /* Estilo para el fondo de la página principal */
 #mainApp {

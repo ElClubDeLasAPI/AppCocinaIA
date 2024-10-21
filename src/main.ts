@@ -200,7 +200,6 @@ async function generateRecipes() {
         showMascotMessage("¡Recetas generadas! Echa un vistazo a estas deliciosas opciones.");
     } catch (error) {
         console.error('Error al generar las recetas:', error);
-        alert('Hubo un error al generar las recetas. Por favor, intenta de nuevo con diferentes ingredientes.');
         showMascotMessage("Ups, parece que hubo un problema. ¿Qué tal si intentamos con otros ingredientes?");
     } finally {
         generateBtn.disabled = false;
